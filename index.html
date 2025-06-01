@@ -73,6 +73,12 @@
       font-size: 1em;
       flex-grow: 1;
       outline: none;
+      caret-color: #0f0;
+      animation: blink-caret 1s step-start infinite;
+    }
+
+    @keyframes blink-caret {
+      50% { caret-color: transparent; }
     }
   </style>
 </head>
@@ -197,7 +203,7 @@
         terminal.textContent += loadingLines[i] + "\n";
         setTimeout(() => showLoadingLines(i + 1), 500);
       } else {
-        showFakeLogs(0); // Appel avant dossierInfo
+        showFakeLogs(0);
       }
     }
 
@@ -215,7 +221,8 @@
     function showDossierInfo(i) {
       if (i < dossierInfo.length) {
         terminal.textContent += dossierInfo[i] + "\n";
-        setTimeout(() => showDossierInfo(i + 1), 300);
+        terminal.scrollTop = terminal.scrollHeight;
+        setTimeout(() => showDossierInfo(i + 1), 500);
       }
     }
 
@@ -241,3 +248,17 @@
       if (e.key === 'Enter') {
         const command = input.value.trim().toLowerCase();
         output.innerHTML += `C:\\User\\Shadow&gt; ${command}<br>`;
+        input.value = '';
+
+        if (command === 'quit' || command === 'exit') {
+          document.body.innerHTML = '<div style="background:black;color:red;font-family:monospace;padding:20px;font-size:1.5em;">Session terminée.<br>Fermeture en cours...</div>';
+        } else {
+          output.innerHTML += `'${command}' n'est pas reconnu comme une commande interne ou externe.<br>`;
+        }
+
+        output.scrollTop = output.scrollHeight;
+      }
+    });
+  </script>
+</body>
+</html>
