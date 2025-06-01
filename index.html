@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dossier Classé - SHADOW_BLAKE</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: #0f0;
+      font-family: Consolas, monospace;
+      overflow: hidden;
+    }
+
+    #loadingScreen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: black;
+      color: #0f0;
+      font-size: 1.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      white-space: pre-line;
+      z-index: 9999;
+      padding: 30px;
+    }
+
+    #loadingText {
+      width: 100%;
+      max-width: 900px;
+      height: 70vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      margin-bottom: 10px;
+      white-space: pre-wrap;
+      padding-right: 10px;
+      box-sizing: border-box;
+    }
+
+    #progressBar {
+      font-family: Consolas, monospace;
+      font-size: 1.1em;
+      color: #0f0;
+      margin-bottom: 20px;
+    }
+
+    #content {
+      display: none;
+      padding: 40px;
+    }
+
+    .glitch {
+      position: relative;
+      color: #a00;
+      font-size: 2em;
+      font-weight: bold;
+      text-transform: uppercase;
+      animation: glitch 1s infinite;
+      user-select: none;
+    }
+
+    .glitch::before {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+      color: #a00;
+      animation: glitchTop 1s infinite;
+      user-select: none;
+    }
+
+    @keyframes glitch {
+      0%, 100% { transform: none; }
+      20% { transform: skew(-3deg); }
+      40% { transform: skew(3deg); }
+      60% { transform: skew(-2deg); }
+      80% { transform: skew(1deg); }
+    }
+
+    @keyframes glitchTop {
+      0%, 100% { clip: rect(0, 9999px, 0, 0); }
+      10% { clip: rect(5px, 9999px, 30px, 0); transform: translate(-1px, -1px); }
+      20% { clip: rect(65px, 9999px, 70px, 0); transform: translate(1px, -1px); }
+    }
+
+    .fake-cmd {
+      position: absolute;
+      background: #000;
+      border: 1px solid #333;
+      color: #0f0;
+      padding: 10px;
+      width: 320px;
+      font-size: 0.8em;
+      box-shadow: 0 0 10px #0f0;
+      font-family: Consolas, monospace;
+      white-space: pre-wrap;
+      opacity: 0.95;
+      animation: fadeout 6s forwards;
+    }
+
+    @keyframes fadeout {
+      0% { opacity: 1; }
+      100% { opacity: 0; display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loadingScreen">
+    <div id="progressBar"></div>
+    <div id="loadingText"></div>
+  </div>
+
+  <div id="content">
+    <h1 class="glitch" data-text="DOSSIER CONFIDENTIEL">DOSSIER CONFIDENTIEL</h1>
+    <p>Nom : <strong>John "Shadow" Blake</strong></p>
+    <p>Nationalité : Inconnue</p>
+    <p>Dossier : <em>Agent disparu en 2031 lors de l'opération "Black Echo".</em></p>
+  </div>
+
+  <script>
+    const loadingLines = [
+      'Connexion au réseau sécurisé...',
+      'Bypass du pare-feu...',
+      'Injection SQL...',
+      'Accès à la base de données classifiée...',
+      'Chargement du dossier : SHADOW_BLAKE...',
+      '--- ACCÈS AUTORISÉ ---\n'
+    ];
+
+    function getProgressBarText(current) {
+      const blocks = Math.floor(current / 5);
+      const empty = 20 - blocks;
+      return `[${'█'.repeat(blocks)}${'░'.repeat(empty)}] ${current}%`;
+    }
+
+    const progressBar = document.getElementById('progressBar');
+    const loadingText = document.getElementById('loadingText');
+
+    function showLoadingLines(lines, index = 0) {
+      if (index < lines.length) {
+        loadingText.innerHTML += lines[index] + '\n';
+        loadingText.scrollTop = loadingText.scrollHeight;
+        setTimeout(() => showLoadingLines(lines, index + 1), 600);
+      } else {
+        animateProgressBar(0, showLogs);
+      }
+    }
+
+    function animateProgressBar(current, callback) {
+      if (current > 100) {
+        progressBar.textContent = '';
+        callback();
+        return;
+      }
+
+      progressBar.textContent = getProgressBarText(current);
+      setTimeout(() => animateProgressBar(current + Math.floor(Math.random() * 7) + 3, callback), 100);
+    }
+
+    function showLogs() {
+      const lines = [
+        "[C#] Compiling CIA.Agent.ShadowModule.cs...",
+        "[C#] ShadowModule.cs(124,18): warning CS0168: Variable 'tmpKey' is declared but never used",
+        "[C#] Encrypting payload with OTP-448...",
+        "[C#] Establishing secure channel to SATCOM-7...",
+        "[C#] Linking agents.dll to secure runtime...",
+        "[C#] Build succeeded. 0 Error(s), 1 Warning(s)",
+        "[Java] Initializing JVM...",
+        "[Java] Loading class 'net.cia.shadow.AgentAccess'",
+        "[Java] Compiling AgentAccess.java...",
+        "[Java] Bypassing JVM sandbox restrictions...",
+        "[Java] Overriding security manager...",
+        "[Java] agent.TokenVerifier() : signature mismatch",
+        "[Java] SecurityException at net.cia.shadow.AuthModule",
+        "[ASM] mov eax, [ebx+04]",
+        "[ASM] xor ecx, ecx",
+        "[ASM] int 0x80 ; syscall",
+        "[ASM] push ebp",
+        "[ASM] call decrypt_token",
+        "[ASM] cmp eax, 1",
+        "[ASM] jne failed_access",
+        "[ASM] mov [0x7FFDA100], shellcode_start",
+        "[ASM] jmp kernel_hook_entry",
+        "[System] Allocating heap memory...",
+        "[System] Writing to /etc/shadow_keys...",
+        "[System] Mounting volume 'X:/'",
+        "[System] Encrypting sector 0041-005F...",
+        "[System] BIOS override loaded",
+        "[System] BIOS checksum: OK",
+        "[System] Overwriting MBR signature...",
+        "[System] Patching kernel syscall table...",
+        "[Security] Token match: 493B5",
+        "[Security] Secure channel open (AES-256)",
+        "[Security] Zero-knowledge proof validated",
+        "[Security] TLS 1.3 tunnel established (PQC-RSA-8192)",
+        "[Loader] Injecting kernel patch...",
+        "[Loader] Executing shellcode @0x7FFDA100",
+        "[Loader] SYSTEM_OVERRIDE: ACTIVE",
+        "[Loader] Bypassing DEP/ASLR protections...",
+        "[Loader] Relocating .text section to RWX memory",
+        "[NETWORK] TOR bridge connection established",
+        "[NETWORK] Packet fragmentation enabled (IP ID 0xDEAD)",
+        "[CRYPTO] Quantum-resistant key exchange initiated",
+        "[CRYPTO] SHA-3-512 checksum verified",
+        "[TRACE] agent.shadow.connection[OK]",
+        "[TRACE] hook.injection.success @ handle[0x92F3]",
+        "[TRACE] agent.metadata.sync: complete",
+        "[TRACE] memory.obfuscation.complete",
+        "[TRACE] persistence.mechanism.installed",
+        "[WARNING] Unauthorized syscall blocked",
+        "[WARNING] Possible honeypot detected",
+        "[SURVEILLANCE] Microphone hotpatch active",
+        "[SURVEILLANCE] Keystroke interception @ 127.3%",
+        "[ERROR] Failed to erase forensic artifacts",
+        "[AUDIT] No logs were generated for this session",
+        "[AUDIT] All audit trails erased successfully",
+        "[DONE] Dossier SHADOW_BLAKE chargé avec succès.",
+        "[DONE] Opération PHANTOM terminée. Témoins neutralisés.",
+        "[CIA] Initialisation du mode d'observation...",
+        "[CIA] Activation du protocole NIGHTFALL...",
+        "[CIA] Chargement des modules clandestins..."
+      ];
+
+      let index = 0;
+      const logInterval = setInterval(() => {
+        if (index < lines.length) {
+          loadingText.innerHTML += lines[index] + '\n';
+          loadingText.scrollTop = loadingText.scrollHeight;
+          index++;
+        } else {
+          clearInterval(logInterval);
+          setTimeout(() => {
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+            setInterval(showFakeCmd, 2500);
+          }, 500);
+        }
+      }, 50);
+    }
+
+    const fakeCmds = [
+      "C:\\Users\\Administrator> dir\n Répertoire de C:\\SECRET",
+      "C:\\CIA\\Logs> ping shadow.server.net",
+      "C:\\BlackEcho> cd SHADOW_BLAKE",
+      "C:\\SHADOW_BLAKE> type rapport_final.log\n[ALERTE] Agent manquant.",
+      "C:\\System32> netstat -ano | findstr :443",
+      "C:\\Admin> tracert cia.shadow.net",
+      "C:\\Encrypted> decrypt dossier_shadow.enc",
+      "C:\\Agent\\Logs> tail -f mission_data.log",
+      "X:\\bootloader> init --agent shadow"
+    ];
+
+    function showFakeCmd() {
+      const div = document.createElement('div');
+      div.className = "fake-cmd";
+      div.innerText = fakeCmds[Math.floor(Math.random() * fakeCmds.length)];
+      div.style.top = `${Math.random() * window.innerHeight * 0.7}px`;
+      div.style.left = `${Math.random() * window.innerWidth * 0.7}px`;
+      document.body.appendChild(div);
+      setTimeout(() => div.remove(), 6000);
+    }
+
+    setTimeout(() => showLoadingLines(loadingLines), 500);
+  </script>
+</body>
+</html>
