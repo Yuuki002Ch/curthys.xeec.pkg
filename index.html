@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dossier Shadow Blake</title>
   <style>
     body {
@@ -52,39 +52,58 @@
       background: #000;
       color: #0f0;
       border: 1px solid #0f0;
-      padding: 10px;
+      padding: 10px 12px;
       font-family: Consolas, monospace;
-      width: 400px;
+      width: 480px;
       z-index: 5;
-      box-shadow: 0 0 10px #0f0;
+      box-shadow: 0 0 15px #0f0;
+      user-select: none;
     }
 
-    .cmd-input-line {
+    #cmd-output {
+      max-height: 150px;
+      overflow-y: auto;
+      margin-bottom: 6px;
+      white-space: pre-wrap;
+    }
+
+    #cmd-input-line {
       display: flex;
       align-items: center;
-      margin-top: 5px;
+      font-size: 1em;
+    }
+
+    #cmd-prompt {
+      flex-shrink: 0;
+      margin-right: 6px;
     }
 
     #cmd-input {
-      background: black;
+      background: transparent;
       border: none;
       color: #0f0;
       font-family: Consolas, monospace;
       font-size: 1em;
-      flex-grow: 1;
       outline: none;
+      flex-grow: 1;
+      caret-color: #0f0;
     }
+
+    /* Curseur clignotant */
+    #cmd-input::selection {
+      background: rgba(0, 255, 0, 0.4);
+    }
+
   </style>
 </head>
 <body>
   <pre id="terminal"></pre>
 
-  <div id="cmd-window">
-    <div class="cmd-header">C:\\User\\Shadow&gt;</div>
-    <div class="cmd-output" id="cmd-output"></div>
-    <div class="cmd-input-line">
-      <span>C:\\User\\Shadow&gt;</span>
-      <input type="text" id="cmd-input" autofocus />
+  <div id="cmd-window" aria-label="Terminal interactif">
+    <div id="cmd-output" role="log" aria-live="polite"></div>
+    <div id="cmd-input-line">
+      <span id="cmd-prompt">C:\User\Shadow&gt;</span>
+      <input type="text" id="cmd-input" autocomplete="off" spellcheck="false" aria-label="Entrée de commande" autofocus />
     </div>
   </div>
 
@@ -200,7 +219,10 @@
         input.value = '';
 
         if (command === 'quit' || command === 'exit') {
-          document.body.innerHTML = '<div style="background:black;color:red;font-family:monospace;padding:20px;font-size:1.5em;">Session terminée.<br>Fermeture en cours...</div>';
+          document.body.innerHTML = `
+            <div style="background:black;color:red;font-family:monospace;padding:20px;font-size:1.5em;display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;">
+              Session terminée.<br>Fermeture en cours...
+            </div>`;
         } else {
           output.innerHTML += `'${command}' n'est pas reconnu comme une commande interne ou externe.<br>`;
         }
