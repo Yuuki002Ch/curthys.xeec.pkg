@@ -121,17 +121,24 @@
       padding: 30px;
     }
 
-    #loadingText {
-      width: 100%;
-      max-width: 900px;
-      height: 70vh;
-      overflow-y: auto;
-      overflow-x: hidden;
+      #loadingText {
+       width: 100%;
+       max-width: 900px;
+       height: 70vh;
+       overflow-y: auto; /* garder le scroll */
+       overflow-x: hidden;
       margin-bottom: 10px;
       white-space: pre-wrap;
       padding-right: 10px;
       box-sizing: border-box;
+      scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE et Edge */
     }
+
+    #loadingText::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Edge */
+    }
+
 
     #progressBar {
       font-family: Consolas, monospace;
@@ -144,6 +151,31 @@
       display: none;
       padding: 40px;
     }
+    
+      #toggleBtn {
+    position: fixed;
+    bottom: 15px;
+    left: 15px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #0f0;
+    color: #0f0;
+    font-size: 1.5em;
+    line-height: 28px;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0.5;
+    user-select: none;
+    z-index: 10001;
+    transition: opacity 0.3s ease;
+  }
+
+  #toggleBtn:hover {
+    opacity: 1;
+  }
+
 
     #cmd {
       position: fixed;
@@ -202,7 +234,8 @@
   </style>
 </head>
 <body>
-
+  
+  <button id="toggleBtn" title="Afficher/Masquer Terminal">≡</button>
   <div id="loadingScreen">
     <div id="progressBar"></div>
     <div id="loadingText"></div>
@@ -211,8 +244,16 @@
   <div id="content">
     <h1 class="glitch" data-text="DOSSIER CONFIDENTIEL">DOSSIER CONFIDENTIEL</h1>
     <p>Nom : <strong>Curthys "Aleph" Xeec</strong></p>
-    <p>Nationalité : Inconnue</p>
-    <p>Dossier : <em>Agent disparu en XXXX lors de l'opération "133356113610120100441147123172".</em></p>
+    <p>Nationalité : Réunion</p>
+    <p>Qui est Curthys ‘Aleph’ Xeec ?</p>
+
+    <p>1. Passé<br>
+      Curthys est née à la Réunion plus précisément à Saint-Denis. A l’age de trois ans ses parents et lui vont partir aux États Unis dans l’état de Floride, dans la ville de Coral Gables, pour les affaires. A vrai dire il n’a jamais réellement connu la rue et la misère, son père étant cadre dans une grande entreprise, il vivait plutôt bien, mais un jour son père va se faire assassiner par trois membres d’un gang qui avait étaient commandité pour le tuer. A partir de ce jour là, sa mère décida de déménager a Los Santos car ayant peur et n’ayant plus d’argent c’était la seul destination possible. Quand tout cela c’est passé il avait seize ans mais malgrès tout il va rester positif.</p>
+
+    <p>« From inner turmoil can emerge a light that dances. »</p>
+
+    <p>Mais il y’a quand meme une chose qui est sure c’est qu’il va etre obliger de ramener de l’argent et malgres la demande de sa mere lui suppliant de ne pas le faire. Curthys va quand meme réussir à toucher une bourse pour payer l’université et comme il est prmier de sa prmo il va partir deux ans en Europe de dix-sept ans à dix-neuf ans plus précisément en Suède. Malgrès cette bonne nouvelle tout n’est pas rose, il continu à dealer pour aider sa mère et le contraste entre l’université et lui énorme, sachant pertinement qu’il allait se faire cramer et par un étudiant du campus il préféra arréter ses etude avec son Bachelor 's Degree.  à l’age de 22 ans et là il décida de se tourner vers malheureusement vers l’illégal drogues dur, combat cladestin et  hacké de grosse entreprise pour ensuite vendre leurs bases de données puis un jour après une journée banale le chef BMF <span id="magicText">Jason 'Pilote' Nero</span> décida de le recruter. Comme il est bon en calcul il sera mit au poste de conseiller du Triple OG. Grâce à ça la vie devient un peu mieux pour lui il se fait notament des amis comme Eddie et Jimmy. A la séparation du groupe il va décider de suivre Eddie et Jimmy.</p>
+
   </div>
 
   <div id="cmd" aria-label="Terminal">
@@ -343,10 +384,47 @@
       return now.toTimeString().split(' ')[0];
     }
 
+  const text = "Jason 'Pilote' Nero";
+  const el = document.getElementById('magicText');
+
+  // Liste des caractères aléatoires possibles (Minecraft-style)
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}<>/?\\|';
+
+  function getRandomChar() {
+    return chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+
+  // Fonction qui anime le texte aléatoire
+  function magicEffect() {
+    let result = '';
+    for (let i = 0; i < text.length; i++) {
+      // 50% de chances d'afficher une lettre aléatoire ou la vraie lettre
+      if (Math.random() < 95) {
+        result += getRandomChar();
+      } else {
+        result += text.charAt(i);
+      }
+    }
+    el.textContent = result;
+  }
+
+  // Lance l'animation toutes les 100ms
+  setInterval(magicEffect, 75);
+
     const loadingScreen = document.getElementById('loadingScreen');
     const content = document.getElementById('content');
     const cmdInput = document.getElementById('cmdInput');
     const cmdContent = document.getElementById('cmdContent');
+    const cmd = document.getElementById('cmd');
+  const toggleBtn = document.getElementById('toggleBtn');
+
+  toggleBtn.addEventListener('click', () => {
+    if (cmd.style.display === 'none') {
+      cmd.style.display = 'flex';
+    } else {
+      cmd.style.display = 'none';
+    }
+  });
 
     function showLogs() {
       loadingText.innerHTML = ''; // Clear loading text for logs display
