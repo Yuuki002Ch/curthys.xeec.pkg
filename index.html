@@ -13,12 +13,10 @@
       height: 100vh;
       position: relative;
     }
-/* Pour l’élément scrollable */
-.scrollable {
-  width: 300px;
-  height: 200px;
-  overflow-y: auto; /* scroll vertical */
-  overflow-x: hidden; /* pas de scroll horizontal */
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow-y: scroll; /* permet de scroller */
   
   /* Firefox */
   scrollbar-width: none;
@@ -28,7 +26,8 @@
 }
 
 /* Chrome, Safari et Edge */
-.scrollable::-webkit-scrollbar {
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
   display: none;
 }
     /* Effet glitch pour le titre */
