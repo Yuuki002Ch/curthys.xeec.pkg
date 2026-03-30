@@ -13,7 +13,24 @@
       height: 100vh;
       position: relative;
     }
+/* Pour l’élément scrollable */
+.scrollable {
+  width: 300px;
+  height: 200px;
+  overflow-y: auto; /* scroll vertical */
+  overflow-x: hidden; /* pas de scroll horizontal */
+  
+  /* Firefox */
+  scrollbar-width: none;
 
+  /* IE 10+ */
+  -ms-overflow-style: none;
+}
+
+/* Chrome, Safari et Edge */
+.scrollable::-webkit-scrollbar {
+  display: none;
+}
     /* Effet glitch pour le titre */
     .glitch {
       position: relative;
