@@ -176,6 +176,28 @@
     opacity: 1;
   }
 
+    #asciiBox {
+  max-width: 750px;
+  height: 220px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 20px 0;
+  padding-right: 10px;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+#asciiBox::-webkit-scrollbar {
+  display: none;
+}
+
+#asciiBox pre {
+  margin: 0;
+  color: #0f0;
+  font-family: Consolas, monospace;
+  line-height: 1.4em;
+}
 
     #cmd {
       position: fixed;
@@ -244,12 +266,23 @@
 <div id="content">
   <h1 class="glitch" data-text="DOSSIER CONFIDENTIEL">DOSSIER CONFIDENTIEL</h1>
 
-  <p>Nom : <strong>[CENSURÉ]</strong></p>
-  <p>Alias : <strong>Curthys "Aleph" Xeec</strong></p>
-  <p>Nationalité : Réunion</p>
-  <p>Âge : 24 ans</p>
-
-  <p><strong>RÉSUMÉ :</strong> Individu à haut potentiel stratégique, combinant expérience militaire terrain, formation académique et activités criminelles avancées.</p>
+<div id="asciiBox">
+<pre>
+╔══════════════════════════════════════════════════════╗
+║                DOSSIER : ALEPH                       ║
+╠══════════════════════════════════════════════════════╣
+║ Nom          : [CENSURÉ]                             ║
+║ Alias        : Curthys "Aleph" Xeec                  ║
+║ Nationalité  : Réunion                               ║
+║ Âge          : 24 ans                                ║
+╠══════════════════════════════════════════════════════╣
+║ RÉSUMÉ :                                            ║
+║ Individu à haut potentiel stratégique, combinant     ║
+║ expérience militaire terrain, formation académique   ║
+║ et activités criminelles avancées.                   ║
+╚══════════════════════════════════════════════════════╝
+</pre>
+</div>
 
   <p><strong>1. Origines</strong><br>
   Né à La Réunion (Saint-Denis). Déménage à l’âge de 3 ans en Floride (Coral Gables). Environnement stable jusqu’à l’assassinat du père à 16 ans (contrat criminel). Relocalisation à Los Santos dans un contexte précaire.</p>
