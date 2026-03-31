@@ -2,428 +2,341 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dossier Classé - ALEPH</title>
   <style>
-    body {
-      margin: 0;
-      background: black;
-      color: #0f0;
-      font-family: Consolas, monospace;
-      overflow: hidden;
-      height: 100vh;
-      position: relative;
+    :root {
+      --green: #0f0;
+      --cyan: #0ff;
+      --magenta: #f0f;
+      --bg: #000;
+      --panel: rgba(0,0,0,0.94);
+      --line: rgba(0,255,0,0.22);
     }
-body{
-  height: 100%;
-  margin: 0;
-  overflow-y: scroll; /* permet de scroller */
-  
-  /* Firefox */
-  scrollbar-width: none;
-
-  /* IE 10+ */
-  -ms-overflow-style: none;
-}
-
-/* Chrome, Safari et Edge */
-body::-webkit-scrollbar {
-  display: none;
-}
-    /* Effet glitch pour le titre */
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; width: 100%; min-height: 100%; background: var(--bg); color: var(--green);
+      font-family: Consolas, monospace; overflow-x: hidden; scrollbar-width: none; -ms-overflow-style: none;
+    }
+    body::-webkit-scrollbar { display: none; }
     .glitch {
-      position: relative;
-      font-size: 3em;
-      font-weight: bold;
-      color: #0f0;
-      letter-spacing: 0.1em;
-      user-select: none;
+      position: relative; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: bold; color: var(--green);
+      letter-spacing: 0.12em; user-select: none; text-align: center; margin: 0 0 40px;
+      text-shadow: 0 0 8px rgba(0,255,0,0.25);
     }
-    .glitch::before,
-    .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      left: 0; top: 0;
-      width: 100%;
-      overflow: hidden;
-      clip: rect(0, 900px, 0, 0);
+    .glitch::before, .glitch::after {
+      content: attr(data-text); position: absolute; left: 0; top: 0; width: 100%; overflow: hidden; clip: rect(0, 900px, 0, 0);
     }
-    .glitch::before {
-      animation: glitchTop 2s infinite linear alternate-reverse;
-      color: #0ff;
-      z-index: -1;
-    }
-    .glitch::after {
-      animation: glitchBottom 3s infinite linear alternate-reverse;
-      color: #f0f;
-      z-index: -1;
-    }
-
+    .glitch::before { animation: glitchTop 2s infinite linear alternate-reverse; color: var(--cyan); z-index: -1; }
+    .glitch::after { animation: glitchBottom 3s infinite linear alternate-reverse; color: var(--magenta); z-index: -1; }
     @keyframes glitchTop {
-      0% {
-        clip: rect(0, 900px, 0, 0);
-        transform: translate(0);
-      }
-      10% {
-        clip: rect(0, 900px, 20px, 0);
-        transform: translate(-2px, -2px);
-      }
-      20% {
-        clip: rect(0, 900px, 0, 0);
-        transform: translate(0);
-      }
-      30% {
-        clip: rect(0, 900px, 15px, 0);
-        transform: translate(-2px, 2px);
-      }
-      40% {
-        clip: rect(0, 900px, 0, 0);
-        transform: translate(0);
-      }
-      50% {
-        clip: rect(0, 900px, 25px, 0);
-        transform: translate(-1px, -1px);
-      }
-      60%, 100% {
-        clip: rect(0, 900px, 0, 0);
-        transform: translate(0);
-      }
+      0% { clip: rect(0,900px,0,0); transform: translate(0); }
+      10% { clip: rect(0,900px,20px,0); transform: translate(-2px,-2px); }
+      30% { clip: rect(0,900px,15px,0); transform: translate(-2px,2px); }
+      50% { clip: rect(0,900px,25px,0); transform: translate(-1px,-1px); }
+      60%,100% { clip: rect(0,900px,0,0); transform: translate(0); }
     }
-
     @keyframes glitchBottom {
-      0% {
-        clip: rect(0, 900px, 0, 0);
-        transform: translate(0);
-      }
-      10% {
-        clip: rect(15px, 900px, 40px, 0);
-        transform: translate(2px, 2px);
-      }
-      20% {
-        clip: rect(0, 900px, 0, 0);
-        transform: translate(0);
-      }
-      30% {
-        clip: rect(10px, 900px, 35px, 0);
-        transform: translate(1px, -1px);
-      }
-      40% {
-        clip: rect(0, 900px, 0, 0);
-        transform: translate(0);
-      }
-      50% {
-        clip: rect(20px, 900px, 50px, 0);
-        transform: translate(2px, 1px);
-      }
-      60%, 100% {
-        clip: rect(0, 900px, 0, 0);
-        transform: translate(0);
-      }
+      0% { clip: rect(0,900px,0,0); transform: translate(0); }
+      10% { clip: rect(15px,900px,40px,0); transform: translate(2px,2px); }
+      30% { clip: rect(10px,900px,35px,0); transform: translate(1px,-1px); }
+      50% { clip: rect(20px,900px,50px,0); transform: translate(2px,1px); }
+      60%,100% { clip: rect(0,900px,0,0); transform: translate(0); }
     }
+    h2 { color: var(--cyan); margin: 34px 0 14px; letter-spacing: 0.05em; font-size: 1.1rem; }
+    strong { color: var(--green); }
+    #content { display: none; padding: 48px 24px 120px; line-height: 1.65em; max-width: 980px; margin: 0 auto; }
+    #content p { margin: 0 0 16px; }
+    /* Masquer TOUTES les barres de défilement sans désactiver le scroll */
 
-    #loadingScreen {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: black;
-      color: #0f0;
-      font-size: 1.2em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      white-space: pre-line;
-      z-index: 9999;
-      padding: 30px;
-    }
-
-      #loadingText {
-       width: 100%;
-       max-width: 900px;
-       height: 70vh;
-       overflow-y: auto; /* garder le scroll */
-       overflow-x: hidden;
-      margin-bottom: 10px;
-      white-space: pre-wrap;
-      padding-right: 10px;
-      box-sizing: border-box;
-      scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;  /* IE et Edge */
-    }
-
-    #loadingText::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Edge */
-    }
-
-
-    #progressBar {
-      font-family: Consolas, monospace;
-      font-size: 1.1em;
-      color: #0f0;
-      margin-bottom: 20px;
-    }
-
-    #content {
-      display: none;
-      padding: 40px;
-    }
-    
-      #toggleBtn {
-    position: fixed;
-    bottom: 15px;
-    left: 15px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    border: 1px solid #0f0;
-    color: #0f0;
-    font-size: 1.5em;
-    line-height: 28px;
-    text-align: center;
-    cursor: pointer;
-    opacity: 0.5;
-    user-select: none;
-    z-index: 10001;
-    transition: opacity 0.3s ease;
-  }
-
-  #toggleBtn:hover {
-    opacity: 1;
-  }
-
-    #asciiBox {
-  max-width: 750px;
-  height: 220px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin: 20px 0;
-  padding-right: 10px;
-
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-#asciiBox::-webkit-scrollbar {
+/* Chrome, Safari, Edge, Opera */
+::-webkit-scrollbar {
   display: none;
 }
 
-#asciiBox pre {
-  margin: 0;
-  color: #0f0;
-  font-family: Consolas, monospace;
-  line-height: 1.4em;
+/* Firefox */
+* {
+  scrollbar-width: none;   /* none ou thin */
+  -ms-overflow-style: none; /* IE/Edge plus anciens */
 }
 
-    #cmd {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #000;
-      border: 1px solid #0f0;
-      color: #0f0;
-      font-family: Consolas, monospace;
-      font-size: 0.9em;
-      padding: 15px;
-      width: 350px;
-      height: 250px;
-      box-shadow: 0 0 10px #0f0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      white-space: pre;
-      user-select: none;
-      overflow: hidden;
-      text-align: center;
-    }
+/* Pour tes panneaux et terminal, si tu veux forcer */
+.panelBody,
+#cmdContent,
+#loadingText {
+  overflow-y: auto;     /* garde le défilement activé */
+}
+    #asciiBox { max-width: 100%; overflow-x: auto; margin: 20px 0 34px; padding: 12px 14px; border: 1px solid rgba(0,255,0,0.18); background: rgba(0,255,0,0.03); }
+    #asciiBox pre, pre { color: var(--green); font-size: 0.95em; margin: 0; white-space: pre-wrap; word-break: break-word; }
+    #toggleBtn { position: fixed; bottom: 15px; left: 15px; background: rgba(0,0,0,0.4); border-radius: 50%; width: 30px; height: 30px; border: 1px solid var(--green); color: var(--green); font-size: 1.5em; line-height: 28px; text-align: center; cursor: pointer; opacity: 0.65; user-select: none; z-index: 10001; transition: opacity 0.3s ease, transform 0.2s ease; }
+    #toggleBtn:hover { opacity: 1; transform: scale(1.06); }
+    #cmd { position: fixed; bottom: 20px; right: 20px; background: var(--panel); border: 1px solid var(--green); color: var(--green); width: 410px; height: 330px; box-shadow: 0 0 18px rgba(0,255,0,0.35); display: flex; flex-direction: column; overflow: hidden; z-index: 10000; backdrop-filter: blur(4px); }
+    #cmdHeader { height: 34px; display: flex; align-items: center; gap: 6px; padding: 0 10px; border-bottom: 1px solid var(--line); background: rgba(0,255,0,0.05); user-select: none; flex-shrink: 0; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; opacity: 0.9; }
+    .dot.red { background: #ff5f56; } .dot.yellow { background: #ffbd2e; } .dot.green { background: #27c93f; }
+    .cmdTitle { margin-left: 6px; letter-spacing: 0.08em; font-weight: bold; }
+    .cmdHint { margin-left: auto; font-size: 0.75em; opacity: 0.75; }
+    #cmdContent { flex: 1; padding: 12px; overflow-y: auto; white-space: pre-wrap; line-height: 1.45em; }
+    #terminalOutput { margin: 0; white-space: pre-wrap; word-break: break-word; }
+    #cmdInputContainer { display: flex; align-items: center; border-top: 1px solid var(--line); padding: 10px 12px; background: rgba(0,255,0,0.03); flex-shrink: 0; }
+    #cmdPrompt { margin-right: 6px; user-select: none; }
+    #cmdInput { background: transparent; border: none; color: var(--green); outline: none; flex: 1; font-family: Consolas, monospace; font-size: 0.95em; }
+    .panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--panel);
+  border: 1px solid var(--green);
+  width: 660px;
+  max-width: 90vw;
+  max-height: 420px;
+  overflow: auto;
+  box-shadow: 0 0 20px rgba(0,255,0,0.3);
+  z-index: 1001;
+  border-radius: 4px;
+}
 
-    #cmdContent {
-      white-space: pre;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      user-select: text;
-    }
+.panelHeader {
+  background: rgba(0,255,0,0.08);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--cyan);
+  font-size: 1.05em;
+  font-weight: bold;
+}
 
-    #cmdInputContainer {
-      width: 100%;
-      margin-top: 10px;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-    }
+.panelBody {
+  padding: 12px 16px;
+  font-size: 0.95em;
+  color: var(--green);
+  white-space: pre-wrap;
+  line-height: 1.5em;
+}
 
-    #cmdPrompt {
-      margin-right: 5px;
-      user-select: none;
-    }
+.panelOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.65);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+}
 
-    #cmdInput {
-      background: black;
-      border: none;
-      color: #0f0;
-      outline: none;
-      flex-grow: 1;
-      font-family: Consolas, monospace;
-      font-size: 0.9em;
-    }
+.panelOverlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+    #cmdInput::placeholder { color: rgba(0,255,0,0.35); }
+    #loadingScreen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; color: var(--green); font-size: 1.2em; display: flex; align-items: center; justify-content: center; flex-direction: column; white-space: pre-line; z-index: 9999; padding: 30px; }
+    #progressBar { font-family: Consolas, monospace; font-size: 1.1em; color: var(--green); margin-bottom: 20px; min-height: 1.4em; }
+    #loadingText { width: 100%; max-width: 900px; height: 70vh; overflow-y: auto; white-space: pre-wrap; margin-bottom: 10px; scrollbar-width: none; -ms-overflow-style: none; }
+    #loadingText::-webkit-scrollbar { display: none; }
   </style>
 </head>
+<div id="medicalPanel" class="panel" hidden>
+  <div class="panelHeader">RAPPORT MÉDICAL</div>
+  <pre class="panelBody">
+Nom          : Curthys 'Aleph' Xeec
+État général : Stable
+Taille       : 1m80
+Poids        : 82 kg
+Groupe       : A-
+Antécédents  : Chirurgie épaule droite (2024)
+Observations : Résilience élevée
+  </pre>
+</div>
+
+<div id="physicalPanel" class="panel" hidden>
+  <div class="panelHeader">MESURES PHYSIQUES</div>
+  <pre class="panelBody">
+IMC            : 25.31
+Endurance      : Élevée
+Force          : Dans la moyenne
+Mobilité       : Excellente
+Réflexes       : Très rapides
+Capacité       : Survie en environnement hostile
+  </pre>
+</div>
+
+<div id="psyPanel" class="panel" hidden>
+  <div class="panelHeader">ÉVALUATION PSYCHOLOGIQUE</div>
+  <pre class="panelBody">
+Profil      : Calculateur, rationnel
+Stress      : Bien géré
+Impulsivité  : Faible
+Loyauté     : Conditionnelle
+Résilience  : Très élevée
+Motivation  : Pragmatique, intérêt personnel
+<div class="panelHeader">RAPPORT PSYCHIATRIQUE – ARMÉE</div>
+  <pre class="panelBody">
+RAPPORT N° : 784‑X44
+SERVICE : Soutien Psychologique Opérationnel – Armées
+DATE : 10/09/2024
+SUJET  : Aleph, ex‑analyste de terrain / acteur clandestin (CENSURÉ)
+
+OBJET :
+Évaluation de la dangerosité, de la capacité à gérer le stress opérationnel, et du potentiel de fidélité dans un cadre contractuel.
+
+OBSERVATIONS :
+- Profil froid, rationnel, extrêmement analytique.
+- Minimisation des affects et refus de toute vulnérabilité émotionnelle.
+- Grande capacité à gérer des situations de stress élevé sans perte de contrôle apparente.
+- Méfiance systématique envers les structures de soutien psychologique officielles.
+- Aucun signe clinique d’ESPT, mais dissociation prononcée entre discours public et logique opérationnelle profonde.
+
+FACTEURS DE RISQUE :
+- Motivé presque uniquement par l’intérêt personnel et la sécurité.
+- Loyauté conditionnelle, facilement sujette à basculement si l’équilibre coût/bénéfice est rompu.
+- Capacité à basculer rapidement dans des logiques de secret total et de double jeu.
+
+FACTEURS DE PROTECTION :
+- Résilience exceptionnelle.
+- Adaptabilité accrue aux environnements hostiles.
+- Grande capacité à anticiper les conséquences secondaires de ses actions.
+
+CONCLUSION :
+- Niveau de menace : MODÉRÉ–ÉLEVÉ, mais fortement prévisible en conditions contrôlées.
+- Recommandation : ne pas utiliser sans contrat formel et supervision rapprochée ; interdiction de missions isolées ou non supervisées.
+- Potentiel exploitabilité élevée, à condition de maintenir un cadre strict et des garanties explicites de protection / rémunération.
+
+Médecin‑psychiatre, Soutien psychologique opérationnel
+Cachet : Niveau 4 – Confidentiel
+  </pre>
+</div>
+
+
+<div id="reportPanel" class="panel" hidden>
+  <div class="panelHeader">RAPPORT COMPLET (Aperçu)</div>
+  <pre class="panelBody">
+Catégorie        | Niveau
+-----------------|----------------------
+Menace           | MODÉRÉ
+Prévisibilité    | Élevée
+Loyauté          | Conditionnelle
+Risque de fuite  | Significatif
+Surveillance     | Active
+Potentiel d'usage| Élevé (sous contrat)
+  </pre>
+</div>
+
+<div id="modalOverlay" class="panelOverlay" hidden></div>
 <body>
-  
   <button id="toggleBtn" title="Afficher/Masquer Terminal">≡</button>
   <div id="loadingScreen">
     <div id="progressBar"></div>
     <div id="loadingText"></div>
   </div>
-
-<div id="content">
-  <h1 class="glitch" data-text="DOSSIER CONFIDENTIEL">DOSSIER CONFIDENTIEL</h1>
-
-  <div id="asciiBox">
-  <pre>
+  <div id="content">
+    <h1 class="glitch" data-text="DOSSIER CONFIDENTIEL">DOSSIER CONFIDENTIEL</h1>
+    <div id="asciiBox">
+      <pre>
 ╔══════════════════════════════════════════════════════╗
 ║                DOSSIER : ALEPH                       ║
 ╠══════════════════════════════════════════════════════╣
-║ Nom          : <span id="magicText">[CENSURÉ]</span>                   ║
+║ Nom          : <span id="magicText">[CENSURÉ]</span>                             ║
 ║ Alias        : Curthys "Aleph" Xeec                  ║
 ║ Nationalité  : Réunion                               ║
 ║ Âge          : 24 ans                                ║
-╠══════════════════════════════════════════════════════╣
-║ RÉSUMÉ :                                             ║
-║ Individu à haut potentiel stratégique, combinant     ║
-║ expérience militaire terrain, formation académique   ║
-║ et activités criminelles avancées.                   ║
 ╚══════════════════════════════════════════════════════╝
-  </pre>
-  </div>
-
-  <h2>PARCOURS</h2>
-
-<strong >Origines et jeunesse :</strong><br><br>
-Né à La Réunion, il passe les premières années de sa vie dans un environnement relativement stable, avant que la tragédie ne frappe. À 16 ans, son père est assassiné dans le cadre d’une opération criminelle commanditée, plongeant sa famille dans l’instabilité et la précarité. Sa mère décide alors de partir pour Los Santos afin de fuir les conséquences immédiates de l’affaire, mais la vie dans cette ville est difficile, marquée par un environnement urbain violent et des opportunités limitées. Très tôt, il développe un sens aigu de la survie et de l’adaptation, apprenant à naviguer entre loyautés familiales, rivalités locales et tensions sociales.
-
-<br><br><strong>Formation académique et espionnage (Russie) :</strong><br><br>
-Grâce à son intelligence et à ses aptitudes exceptionnelles en mathématiques, en stratégie et en élocution, il obtient une bourse pour poursuivre des études en Russie. Officiellement, il se consacre à un parcours académique brillant, marqué par des analyses complexes et des simulations de stratégie militaire. En réalité, il maintient une double vie : il est recruté par des contacts du KGB pour infiltrer et subtiliser des informations sensibles. Son rôle clandestin inclut la collecte de documents militaires américains, qu’il transmet via des canaux cryptés à ses supérieurs russes, opérant avec une discrétion redoutable et une efficacité quasi militaire. Cette double vie forge chez lui une capacité à manipuler les situations, anticiper les comportements adverses et dissimuler ses traces.
-
-  <h2>SERVICE MILITAIRE</h2>
-
-<strong>Durée : 2 ans</strong><br><br>
-<strong>Fonction : Conseiller stratégique sur le terrain</strong><br>
-
-Pendant son service, il est intégré à des unités opérationnelles sur le terrain, où il agit comme analyste et planificateur stratégique en temps réel. Ses missions incluent :
-
-L’analyse tactique des mouvements ennemis et alliés
-L’optimisation des décisions en conditions hostiles
-La coordination discrète d’opérations sur plusieurs fronts
-
-<strong>Incident critique :</strong><br><br>
-Au cours de son service, il obtient un accès non autorisé à des données classifiées de l’armée américaine. Profitant de sa position, il vole des documents sensibles et les transmet directement à une entité affiliée au KGB. Cet acte provoque une compromission majeure des données, exposant certaines opérations à des risques de fuite et mettant en lumière sa capacité à exfiltrer des informations stratégiques sans se faire détecter.
-
-Statut de sortie :<br><br>
-Désertion aggravée avec fuite d’informations. Il quitte l’armée avec un profil marqué par la suspicion, mais son expertise stratégique et ses compétences opérationnelles restent intactes, faisant de lui un élément à la fois précieux et dangereux pour tout réseau qu’il rejoint par la suite.
-  <h2>TRANSITION CRIMINELLE</h2>
-
-  Après rupture avec l’armée :<br><br>
-  Intensification des activités criminelles (drogues dures, combats clandestins, cybercriminalité)<br>
-  Spécialisation dans le vol et la revente de données sensibles<br><br>
-
-  <strong>Recrutement :</strong><br><br>
-  Intégré au sein de <span id="magicText">[CENSURÉ]</span><br><br>
-
-  <strong>Rôle :</strong> Conseiller stratégique (“Triple OG”)<br>
-  Planification des opérations<br>
-  Gestion des risques<br>
-  Optimisation des flux financiers<br><br>
-
-  <h2>DISSOLUTION & SITUATION ACTUELLE</h2>
-
-  Suite à la dissolution de <span id="magicText">[CENSURÉ]</span> :<br>
-  Rupture organisationnelle<br>
-  Maintien des liens avec Eddie et Jimmy<br>
-  Retour en Russie, officiellement pour poursuivre des “études”<br><br>
-
-  Évaluation actuelle :<br>
-  Couverture académique probable dissimulant des activités parallèles (non confirmées).<br><br>
-
-  <h2>RÉSEAU RELATIONNEL</h2>
-  Eddie – Associé clé<br>
-  Jimmy – Associé opérationnel<br><br>
-
-  <h2>ÉVALUATION PSYCHOLOGIQUE</h2>
-  Résilience élevée<br>
-  Profil froid, calculateur<br>
-  Forte capacité d’adaptation<br>
-  Loyauté centrée sur un cercle restreint<br><br>
-
-  <h2>NIVEAU DE MENACE</h2>
-  ÉLEVÉ<br>
-  Profil combinant expertise stratégique, expérience terrain et activités criminelles internationales.<br><br>
-
-  <h2>RECOMMANDATION</h2>
-  Surveillance active.<br>
-  Potentiel d’exploitation élevé, mais instabilité et risque de trahison significatifs.
-</div>
-  <div id="cmd" aria-label="Terminal">
-    <div id="cmdContent">
-      <pre>
-   _____________
-  / ____/  _/   |
- / /    / // /| |
-/ /____/ // ___ |
-\____/___/_/  |_|
       </pre>
-      <div style="font-size:0.8em; margin-top: 10px;">Tapez <strong>help</strong> pour afficher les commandes.</div>
     </div>
+    <h2>Origines et jeunesse</h2>
+    <p>Né à La Réunion, il passe les premières années de sa vie dans un environnement relativement stable, avant que la tragédie ne frappe.</p>
+    <p>À 16 ans, son père est assassiné dans le cadre d'une opération criminelle commanditée — un événement dont il ne parle pas, mais qui transparaît dans sa méfiance systématique envers toute figure d'autorité et dans son rapport froid à l'argent comme seule garantie réelle.</p>
+    <p>Sa mère décide alors de partir pour Los Santos afin de fuir les conséquences immédiates de l'affaire. La vie dans cette ville est difficile. Très tôt, il apprend à lire les situations, à identifier ce qui a de la valeur pour les autres — et à s'en servir.</p>
+    <h2>Formation académique et premières ventes (Russie)</h2>
+    <p>Grâce à ses aptitudes en mathématiques et en stratégie, il obtient une bourse pour étudier en Russie.</p>
+    <p>Officiellement, son parcours académique est solide. En parallèle, il est approché par des contacts d’un réseau russophone opérant en marge du renseignement officiel.</p>
+    <p>Il commence à monnayer des informations issues de son environnement universitaire — contacts, flux, bribes de données institutionnelles. Ce n’est pas de l’idéologie, c’est du commerce.</p>
+    <h2>Service militaire</h2>
+    <p><strong>Durée :</strong> 2 ans — <strong>Fonction :</strong> Analyste de terrain junior.</p>
+    <p>Intégré à des unités opérationnelles. Il analyse les mouvements, rédige des rapports, assure la coordination logistique.</p>
+    <p><strong>Incident critique :</strong> Saisissant un accès illégal à des données classifiées, il revend des documents contre rémunération à ses anciens contacts russophones. L’erreur : sous-estimer la sensibilité des données et la rapidité de la riposte. Il déserte avant la sanction.</p>
+    <p><strong>Statut :</strong> Désertion, dossier sous surveillance passive.</p>
+    <h2>Transition criminelle</h2>
+    <p>Après sa rupture avec l’armée, il se recentre sur ce qu’il maîtrise : l’intermédiation et la revente d’informations.</p>
+    <p>Il circule entre milieux de drogues dures, combats clandestins et cybercriminalité sans s’y ancrer durablement.</p>
+    <p>Son principe : vendre la valeur, éviter la ligne de feu.</p>
+    <p><strong>Recrutement :</strong> Intégré au sein de [CENSURÉ]</p>
+    <p><strong>Rôle :</strong> Conseiller stratégique (“Triple OG”) — planification, gestion des risques, optimisation financière.</p>
+    <h2>Dissolution & situation actuelle</h2>
+    <p>Suite à la dissolution de <span id="magicText">[CENSURÉ]</span> : rupture structurelle, maintien de liens avec Eddie et Jimmy.</p>
+    <p>Retour en Russie, officiellement pour poursuivre des “études”.</p>
+    <p>Couverture académique probable, activités parallèles non confirmées.</p>
+    <h2>Réseau relationnel</h2>
+    <p>Eddie — Associé clé</p>
+    <p>Jimmy — Associé opérationnel</p>
+    <h2>Évaluation psychologique</h2>
+    <p>Résilience élevée, basée sur une logique de survie.</p>
+    <p>Profil froid et rationnel, émotionnellement fonctionnel mais distant.</p>
+    <p>Surestime parfois sa capacité à anticiper le long terme.</p>
+    <p>Loyauté conditionnelle, limitée à son cercle.</p>
+    <p>Rapport à l’argent comme substitut à la sécurité.</p>
+    <h2>Niveau de menace</h2>
+    <p>MODÉRÉ–ÉLEVÉ</p>
+    <p>Pragmatique, lucide et calculateur. Dangereux parce que prévisible et méthodique, non impulsif.</p>
+    <h2>Recommandation</h2>
+    <p>Surveillance active.</p>
+    <p>Potentiel exploitable. Loyauté contractuelle.</p>
+    <p>Risque de défection si l’équilibre coûts/bénéfices est rompu.</p>
+  </div>
+  <div id="cmd" aria-label="Terminal">
+    <div id="cmdHeader">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+      <span class="cmdTitle">ALEPH TERMINAL</span>
+      <span class="cmdHint">↑ ↓ history · Tab autocomplete</span>
+    </div>
+    <div id="cmdContent"><pre id="terminalOutput"></pre></div>
     <div id="cmdInputContainer">
-      <span id="cmdPrompt">C:\ALEPH&gt;</span>
-      <input type="text" id="cmdInput" autocomplete="off" />
+      <span id="cmdPrompt">C:\\ALEPH&gt;</span>
+      <input type="text" id="cmdInput" autocomplete="off" spellcheck="false" />
     </div>
   </div>
-
   <script>
-    const loadingLines = [
+    const medicalPanel = document.getElementById('medicalPanel');
+const physicalPanel = document.getElementById('physicalPanel');
+const psyPanel = document.getElementById('psyPanel');
+const reportPanel = document.getElementById('reportPanel');
+const modalOverlay = document.getElementById('modalOverlay');
+
+function openPanel(panelId) {
+  const panel = document.getElementById(panelId);
+  panel.hidden = false;
+  modalOverlay.hidden = false;
+  setTimeout(() => modalOverlay.classList.add('visible'), 10);
+}
+
+function closePanel() {
+  [medicalPanel, physicalPanel, psyPanel, reportPanel].forEach(p => p.hidden = true);
+  modalOverlay.classList.remove('visible');
+  setTimeout(() => modalOverlay.hidden = true, 200);
+}
+
+modalOverlay.addEventListener('click', closePanel);
+[medicalPanel, physicalPanel, psyPanel, reportPanel].forEach(p => {
+  p.addEventListener('click', e => e.stopPropagation());
+});
+    const text = "[CENSURÉ]";
+    const el = document.getElementById('magicText');
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}<>/?\\|';
+    function getRandomChar() { return chars.charAt(Math.floor(Math.random() * chars.length)); }
+    function magicEffect() { let result = ''; for (let i = 0; i < text.length; i++) result += (Math.random() < 0.95) ? getRandomChar() : text.charAt(i); el.textContent = result; }
+    setInterval(magicEffect, 75);
+    const loadingIntro = [
       'Connexion au réseau sécurisé...',
       'Bypass du pare-feu...',
-      'Injection SQL...',
-      'Accès à la base de données classifiée...',
-      'Injection 15GBQF7KD.exe',
-      'Decrypte the encrypted folders.....',
-      'Chargement du dossier : ALEPH...',
-      '--- ACCÈS AUTORISÉ ---\n'
+      'Injection du module de chargement...',
+      'Vérification de l\'intégrité du système...',
+      'Accès au dossier confidentiel...',
+      '--- INITIALISATION TERMINÉE ---\n'
     ];
-
-    function getProgressBarText(current) {
-      const blocks = Math.floor(current / 5);
-      const empty = 20 - blocks;
-      return `[${'█'.repeat(blocks)}${'░'.repeat(empty)}] ${current}%`;
-    }
-
-    const progressBar = document.getElementById('progressBar');
-    const loadingText = document.getElementById('loadingText');
-
-    function showLoadingLines(lines, index = 0) {
-      if (index < lines.length) {
-        loadingText.innerHTML += lines[index] + '\n';
-        loadingText.scrollTop = loadingText.scrollHeight;
-        setTimeout(() => showLoadingLines(lines, index + 1), 600);
-      } else {
-        animateProgressBar(0, showLogs);
-      }
-    }
-
-    function animateProgressBar(current, callback) {
-      if (current > 100) {
-        progressBar.textContent = '';
-        callback();
-        return;
-      }
-
-      progressBar.textContent = getProgressBarText(current);
-      setTimeout(() => animateProgressBar(current + Math.floor(Math.random() * 7) + 3, callback), 100);
-    }
-
     const logs = [
       "[01] 110100110000011110010000110101111101101",
       "[C#] Compiling CIA.Agent.ShadowModule.cs...",
@@ -487,56 +400,26 @@ Désertion aggravée avec fuite d’informations. Il quitte l’armée avec un p
       "[CIA] Activation du protocole NIGHTFALL...",
       "[CIA] Chargement des modules clandestins..."
     ];
-
-    function timestamp() {
-      const now = new Date();
-      return now.toTimeString().split(' ')[0];
-    }
-
-  const text = "Jason 'Pilote' Nero";
-  const el = document.getElementById('magicText');
-
-  // Liste des caractères aléatoires possibles (Minecraft-style)
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}<>/?\\|';
-
-  function getRandomChar() {
-    return chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-
-  // Fonction qui anime le texte aléatoire
-  function magicEffect() {
-    let result = '';
-    for (let i = 0; i < text.length; i++) {
-      // 50% de chances d'afficher une lettre aléatoire ou la vraie lettre
-      if (Math.random() < 95) {
-        result += getRandomChar();
-      } else {
-        result += text.charAt(i);
-      }
-    }
-    el.textContent = result;
-  }
-
-  // Lance l'animation toutes les 100ms
-  setInterval(magicEffect, 75);
-
+    const progressBar = document.getElementById('progressBar');
+    const loadingText = document.getElementById('loadingText');
     const loadingScreen = document.getElementById('loadingScreen');
     const content = document.getElementById('content');
     const cmdInput = document.getElementById('cmdInput');
+    const terminalOutput = document.getElementById('terminalOutput');
     const cmdContent = document.getElementById('cmdContent');
     const cmd = document.getElementById('cmd');
-  const toggleBtn = document.getElementById('toggleBtn');
-
-  toggleBtn.addEventListener('click', () => {
-    if (cmd.style.display === 'none') {
-      cmd.style.display = 'flex';
-    } else {
-      cmd.style.display = 'none';
-    }
-  });
-
+    const toggleBtn = document.getElementById('toggleBtn');
+    
+    const history = [];
+    let historyIndex = -1;
+    let matrixInterval = null;
+    function timestamp() { return new Date().toTimeString().split(' ')[0]; }
+    function getProgressBarText(current) { const blocks = Math.floor(current / 5); const empty = 20 - blocks; return `[${'█'.repeat(blocks)}${'░'.repeat(empty)}] ${current}%`; }
+    function scrollTerminal() { cmdContent.scrollTop = cmdContent.scrollHeight; }
+    function writeLine(text = "") { terminalOutput.textContent += text + "\n"; scrollTerminal(); }
+    function writeBlock(text = "") { terminalOutput.textContent += text + "\n\n"; scrollTerminal(); }
     function showLogs() {
-      loadingText.innerHTML = ''; // Clear loading text for logs display
+      loadingText.innerHTML = '';
       let index = 0;
       const interval = setInterval(() => {
         if (index < logs.length) {
@@ -545,58 +428,88 @@ Désertion aggravée avec fuite d’informations. Il quitte l’armée avec un p
           index++;
         } else {
           clearInterval(interval);
-          setTimeout(() => {
-            loadingScreen.style.display = 'none';
-            content.style.display = 'block';
-            initCmd();
-          }, 500);
+          setTimeout(() => { loadingScreen.style.display = 'none'; content.style.display = 'block'; initTerminal(); }, 500);
         }
       }, 50);
     }
+function animateProgressBar(current, callback) {
+  if (current >= 100) {
+    progressBar.textContent = getProgressBarText(100);
+    callback();
+    return;
+  }
+  progressBar.textContent = getProgressBarText(current);
+  const inc = Math.floor(Math.random() * 5) + 1; // 1 à 5
+  const next = Math.min(100, current + inc);
+  setTimeout(() => animateProgressBar(next, callback), 80);
+}
+    function showLoadingSequence() {
+      let introIndex = 0;
+      function showIntro() {
+        if (introIndex < loadingIntro.length) {
+          loadingText.innerHTML += loadingIntro[introIndex] + "\n";
+          loadingText.scrollTop = loadingText.scrollHeight;
+          introIndex++;
+          setTimeout(showIntro, 600);
+        } else {
+          animateProgressBar(0, showLogs);
+        }
+      }
+      showIntro();
+    }
+    const commands = {
+  help: () => ["Commandes disponibles :","help        - Affiche cette aide","clear       - Efface le terminal","about       - Infos sur le dossier","status      - État actuel du profil","scan        - Analyse rapide du dossier","logs        - Affiche les derniers événements","whoami      - Identité connue","credits     - Mentions","matrix      - Effet visuel","reboot      - Réinitialise le terminal","exit        - Masque le terminal","protocol    - Liste les protocoles","affiliates  - Réseau relationnel","mission     - État de mission","trace       - Trace système","encrypt     - Procédure de chiffrement","decrypt     - Procédure de déchiffrement","medical","psy","physical","report"].join("\n"),
 
-    function initCmd() {
-      // Reset cmdContent to show ASCII logo + help message at start
-      cmdContent.innerHTML = `
-        <pre>
-   _____________
+  clear: () => { terminalOutput.textContent = ""; return "Terminal nettoyé."; },
+  about: () => "DOSSIER ALEPH\nProfil classé, historique de double vie, activités à haut risque, navigation entre milieu académique, opérations discrètes et revente d'informations.",
+  status: () => "STATUT ACTUEL:\n- Surveillance active\n- Loyauté conditionnelle\n- Couverture académique plausible\n- Niveau de menace: MODÉRÉ-ÉLEVÉ",
+  scan: () => "SCAN EN COURS...\n- Anomalies détectées: 3\n- Fuite de données: probable\n- Cohérence du récit: élevée\n- Risque opérationnel: important",
+  logs: () => "[00:01] Initialisation du module\n[00:02] Vérification des accès\n[00:03] Dossier ALEPH chargé\n[00:04] Flux réseau suspect\n[00:05] Surveillance renforcée",
+  whoami: () => "IDENTITÉ CONNUE:\nCurthys 'Aleph' Xeec\nAlias opérationnel: ALEPH",
+  credits: () => "INTERFACE: ALEPH TERMINAL\nMode visuel: rétro-futuriste\nConsole: HTML / CSS / JavaScript",
+  matrix: () => { startMatrixEffect(); return "MODE MATRIX ACTIVÉ"; },
+  reboot: () => { terminalOutput.textContent = ""; initTerminal(); return "REBOOT TERMINAL...\nOK"; },
+  exit: () => { cmd.style.display = 'none'; return ""; },
+  protocol: () => "PROTOCOLES INTERNES:\n- PHANTOM\n- NIGHTFALL\n- OBSERVATION\n- EXTRACTION\n- DISCRETION",
+  affiliates: () => "RÉSEAU RELATIONNEL:\n- Eddie : associé clé\n- Jimmy : associé opérationnel",
+  mission: () => "MISSION STATUS:\n- Phase actuelle: passive\n- Interférences: faibles\n- Objectif: maintien de couverture",
+  trace: () => "[TRACE] signal.link.ok\n[TRACE] memory.obfuscation.ok\n[TRACE] sync.channel.ok\n[TRACE] audit.clean.false",
+  encrypt: () => "PROCÉDURE ENCRYPT:\nClé générée.\nCanal sécurisé.\nDonnées protégées.",
+  decrypt: () => "PROCÉDURE DECRYPT:\nClé validée.\nBloc ouvert.\nDonnées lisibles.",
+  
+  // ✅ nouvelles commandes, strictement à l'intérieur de l'objet
+  medical: () => { openPanel('medicalPanel'); return ""; },
+  physical: () => { openPanel('physicalPanel'); return ""; },
+  psy:     () => { openPanel('psyPanel'); return ""; },
+  report:  () => { openPanel('reportPanel'); return ""; }
+};
+
+    function runCommand(input) {
+      const raw = input.trim(); const cmdName = raw.toLowerCase(); if (!cmdName) return; writeLine(`> ${raw}`); if (commands[cmdName]) { const response = commands[cmdName](); if (response) writeBlock(response); } else { writeBlock(`Commande inconnue: "${raw}". Tapez help.`); }
+    }
+    cmdInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { const input = cmdInput.value.trim(); if (!input) return; history.push(input); historyIndex = history.length; runCommand(input); cmdInput.value = ''; }
+      if (e.key === 'ArrowUp') { e.preventDefault(); if (history.length > 0) { historyIndex = Math.max(0, historyIndex - 1); cmdInput.value = history[historyIndex] || ''; setTimeout(() => cmdInput.setSelectionRange(cmdInput.value.length, cmdInput.value.length), 0); } }
+      if (e.key === 'ArrowDown') { e.preventDefault(); if (history.length > 0) { historyIndex = Math.min(history.length, historyIndex + 1); cmdInput.value = historyIndex === history.length ? '' : history[historyIndex]; } }
+      if (e.key === 'Tab') { e.preventDefault(); const partial = cmdInput.value.trim().toLowerCase(); const matches = Object.keys(commands).filter(c => c.startsWith(partial)); if (matches.length === 1) cmdInput.value = matches[0]; else if (matches.length > 1) writeLine(matches.join("   ")); }
+      if (e.key === 'Escape') cmdInput.value = '';
+    });
+    toggleBtn.addEventListener('click', () => { cmd.style.display = cmd.style.display === 'none' ? 'flex' : 'none'; if (cmd.style.display !== 'none') cmdInput.focus(); });
+    function startMatrixEffect() { if (matrixInterval) clearInterval(matrixInterval); const chars = "01"; let count = 0; matrixInterval = setInterval(() => { writeLine(chars[Math.floor(Math.random() * chars.length)].repeat(40)); count++; if (count > 8) clearInterval(matrixInterval); }, 70); }
+    function initTerminal() {
+      terminalOutput.textContent = `   _____________
   / ____/  _/   |
  / /    / // /| |
 / /____/ // ___ |
 \\____/___/_/  |_|
-        </pre>
-        <div style="font-size:0.8em; margin-top: 10px;">Tapez <strong>help</strong> pour afficher les commandes.</div>
-      `;
-      cmdInput.value = '';
-      cmdInput.focus();
+
+Tapez help pour voir les commandes.
+↑ ↓ pour l'historique.
+Tab pour l'autocomplétion.
+`;
+      cmdInput.value = ''; cmdInput.focus(); scrollTerminal();
     }
-
-    // Command handler
-    cmdInput.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        const input = cmdInput.value.trim().toLowerCase();
-        if (!input) return;
-
-        let response = '';
-        switch (input) {
-          case 'help':
-            response = 'Commandes disponibles:\nhelp - Affiche les commandes\nexit - Efface la console\nquit - Efface la console';
-            break;
-          case 'exit':
-          case 'quit':
-            cmdContent.innerHTML = '';
-            break;
-          default:
-            response = `'${input}' n'est pas reconnu comme une commande. Tapez help.`;
-        }
-
-        // Append response below logo or previous output
-        cmdContent.innerHTML += `\n> ${input}\n${response}\n`;
-        cmdInput.value = '';
-        cmdInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
-      }
-    });
-
-    setTimeout(() => showLoadingLines(loadingLines), 500);
+    setTimeout(() => showLoadingSequence(), 800);
   </script>
 </body>
 </html>
